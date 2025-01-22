@@ -27,7 +27,9 @@ namespace BigBattleships
 
         //Coordinates for Printing areas
         int messageAreaX = 4;   //X coor for messages start
-        int messageAreaY = 20;  //Y coor for messages start
+        int messageAreaY = 17;  //Y coor for messages start
+        int mapAreaX = 10;
+        int mapAreaY = 7;
 
         internal void DrawScreen()
         {
@@ -85,8 +87,8 @@ namespace BigBattleships
 
         internal void DrawMap(int index, string[,] Map, int[] activeCoor = null)
         {
-            int xMap = 5 + index * 20;
-            int yMap = 10;
+            int xMap = mapAreaX + index * 20;
+            int yMap = mapAreaY;
             Console.SetCursorPosition(xMap, yMap - 1);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.Green;
@@ -191,12 +193,9 @@ namespace BigBattleships
 
         private void ClearMessageArea()
         {
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(messageAreaX, messageAreaY);
-            for(int i=0; i < 10; i++)
-            {
-                Console.WriteLine("                                                                                                                        ");
-            }
+            Console.Clear();
+            DrawLogo();
+            DrawMaps();
         }
 
         internal int[] GetCoordinate(string[,] map, int mapSlot)

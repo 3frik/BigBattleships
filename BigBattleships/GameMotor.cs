@@ -57,13 +57,13 @@ namespace BigBattleships
             iface.updateMaps(P1.FleetMap, P1.EnemyMap);
             //Show on screen
             iface.DrawLogo();
-            iface.UpdateQuestion("Player 1. Use arrows to select coordinate for your 2 units long boat", []);
             iface.DrawMaps();
             //Create battlefleet Player 1
+
             DeployPlayerFleet(P1);
             //Same player 2 or random
             iface.DrawMessage("Is player 2 a human player? Press Space to agree. Press any other key to play against AI.");
-            DeployPlayerFleet(P2, false);   ///////HAS TO BE CHANGED TO ALLOW AI PLAYERS
+            DeployPlayerFleet(P2);   ///////HAS TO BE CHANGED TO ALLOW AI PLAYERS
             iface.DrawMessage("Both fleet have been deployed.");
 
             ///Loop:
@@ -100,6 +100,9 @@ namespace BigBattleships
                 {
                     playIsOn = false;
                 }
+                Console.Clear();
+                Console.Write("Press any key to jump to the next player.");
+                Console.ReadKey();
             }
             iface.DrawMessage(activePlayer.name + " won the battle. Congratulations.\nThis simulation is now over. Do you want to try again? Press Space to run the simulation one more time.");
             if (Console.ReadKey().Key == ConsoleKey.Spacebar)
@@ -109,9 +112,9 @@ namespace BigBattleships
 
         }
 
-        private void DeployPlayerFleet(Player player, bool auto = false)
+        private void DeployPlayerFleet(Player player)
         {
-            if (!auto)
+            if (!player.isAI)
             {
 
                 for (int i = 0; i < player.fleet.Length; i++)
@@ -135,6 +138,9 @@ namespace BigBattleships
                 player.DeployRandomFleet();
             }
             iface.updateMaps(player.FleetMap, player.EnemyMap);
+            iface.DrawMaps();
+            iface.DrawMessage("Your fleet has been deployed. Press any key to continue.");
+            Console.ReadKey();
         }
     }
 }

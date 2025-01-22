@@ -11,6 +11,7 @@ namespace BigBattleships
         internal string name = "Player";
         int height = 10;
         int width = 10;
+        internal bool isAI = false;
         internal Boat[] fleet;
         internal string[,] FleetMap;
         internal string[,] EnemyMap;
@@ -21,11 +22,12 @@ namespace BigBattleships
         string markedCell = "XX";
         string waterCell = "--";
 
-        public Player(string name, int width, int height)
+        public Player(string name, int width, int height, bool AI = false)
         {
             this.name = name;
             this.width = width;
             this.height = height;
+            this.isAI = AI;
             FleetMap = new string[width, height];
             EnemyMap = new string[width, height];
             ClearMap(FleetMap);
