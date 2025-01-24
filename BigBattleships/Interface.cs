@@ -12,8 +12,6 @@ namespace BigBattleships
 {
     internal class Interface
     {
-        ConsoleColor MainBackground = ConsoleColor.Black;
-        ConsoleColor MainForeground = ConsoleColor.Green;
         string question = "";
         string[] options = { "" };
         string[,] map1;
@@ -69,8 +67,8 @@ namespace BigBattleships
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             // Återställ färgerna
-            Console.ForegroundColor = MainForeground;
-            Console.BackgroundColor = MainBackground;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.BackgroundColor = ConsoleColor.Black;
         }
 
         public void updateMaps(string[,] mapOne, string[,] mapTwo)

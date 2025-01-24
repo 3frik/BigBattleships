@@ -12,14 +12,13 @@ namespace BigBattleships
         internal int Xpos = 0;
         internal int Ypos = 0;
         internal bool isHorizontal;
-        internal bool[] damaged;
+    
         public Boat(int length, int xpos=0, int ypos=0, bool IsHorizontal=true)
         {
             Length = length;
             Xpos = xpos; Ypos = ypos;
             isHorizontal = IsHorizontal;
-            damaged = new bool[length];
-            Array.Fill(damaged, false);
+
         }
 
         internal void Redeploy(int XCoor,int YCoor, int orientation)
