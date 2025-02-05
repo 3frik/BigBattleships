@@ -76,14 +76,22 @@ namespace BigBattleships
 
         internal void DeployRandomFleet()
         {
+            Random rnd = new Random();
             for (int i = 0; i < fleet.Length; i++)
             {
-                Random rnd = new Random();
-                while (!IsPlaceBoat(fleet[i]))
+                do
                 {
                     fleet[i].Xpos = rnd.Next(width);
                     fleet[i].Ypos = rnd.Next(height);
-                }
+                    if (rnd.Next(2) == 0)
+                    {
+                        fleet[i].isHorizontal = false;
+                    }
+                    else
+                    {
+                        fleet[i].isHorizontal = true;
+                    }
+                } while (!IsPlaceBoat(fleet[i]));
                 deployBoat(fleet[i]);
             }
         }
@@ -137,11 +145,16 @@ namespace BigBattleships
             if (result)
             {
                 EnemyMap[xCoor, yCoor] = markedCell;
+                for(int i =0; i<10; i++)
+                {
+                    Thread.Sleep(50);
+                }
             }
             else
             {
                 EnemyMap[xCoor, yCoor] = waterCell;
             }
+            
             return result;
         }
 

@@ -26,8 +26,17 @@ namespace BigBattleships
         //Coordinates for Printing areas
         int messageAreaX = 4;   //X coor for messages start
         int messageAreaY = 17;  //Y coor for messages start
-        int mapAreaX = 10;
+        int mapAreaX = 7;
         int mapAreaY = 7;
+        int mapSizeX = 0;
+        int mapSizeY = 0;
+
+        public Interface(int mapwidth, int mapHeight)
+        {
+            mapSizeY = mapHeight;
+            mapSizeX = mapwidth;
+            messageAreaY = mapHeight+7;  //Y coor for messages start
+        }
 
         internal void DrawScreen()
         {
@@ -85,7 +94,7 @@ namespace BigBattleships
 
         internal void DrawMap(int index, string[,] Map, int[] activeCoor = null)
         {
-            int xMap = mapAreaX + index * 20;
+            int xMap = mapAreaX + (index * (mapSizeX*2+5));
             int yMap = mapAreaY;
             Console.SetCursorPosition(xMap, yMap - 1);
             Console.BackgroundColor = ConsoleColor.Black;

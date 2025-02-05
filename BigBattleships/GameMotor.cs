@@ -24,7 +24,7 @@ namespace BigBattleships
         internal static int mapWidth = 9;
         internal static int mapHeight = 9;
 
-        internal Interface iface = new Interface();
+        internal Interface iface = new Interface(mapWidth,mapHeight);
         internal Player P1 = new Player("Player1", mapWidth, mapHeight);
         internal Player P2 = new Player("Player2", mapWidth, mapHeight);
         internal Boat[] Fleet1 = [new Boat(2), new Boat(3), new Boat(3), new Boat(4), new Boat(5)];
@@ -63,6 +63,10 @@ namespace BigBattleships
             DeployPlayerFleet(P1);
             //Same player 2 or random
             iface.DrawMessage("Is player 2 a human player? Press Space to agree. Press any other key to play against AI.");
+            if (Console.ReadKey().Key != ConsoleKey.Spacebar)
+            {
+                P2.isAI = true;
+            }
             DeployPlayerFleet(P2);   ///////HAS TO BE CHANGED TO ALLOW AI PLAYERS
             iface.DrawMessage("Both fleet have been deployed.");
 
@@ -91,9 +95,18 @@ namespace BigBattleships
                 bool turnOn = true;
                 while (turnOn && enemyPlayer.IsStillFighting())
                 {
-                    iface.DrawScreen();
-                    iface.DrawMessage(activePlayer.name + ", select coordinate to attack.");
-                    int[] attackCoor = iface.GetCoordinate(activePlayer.EnemyMap, 1);
+                    int[] attackCoor = new int[2];
+                    if (activePlayer.isAI)
+                    {
+                        Random rnd = new Random();
+                        attackCoor = new int[] { rnd.Next(mapWidth), rnd.Next(mapHeight) };
+                    }
+                    else
+                    {
+                        iface.DrawScreen();
+                        iface.DrawMessage(activePlayer.name + ", select coordinate to attack.");
+                        attackCoor = iface.GetCoordinate(activePlayer.EnemyMap, 1);
+                    }
                     turnOn = activePlayer.AttackOut(enemyPlayer, attackCoor[0], attackCoor[1]);
                 }
                 if (!enemyPlayer.IsStillFighting())
@@ -101,7 +114,7 @@ namespace BigBattleships
                     playIsOn = false;
                 }
                 Console.Clear();
-                Console.Write("Press any key to jump to the next player.");
+                Console.Write("Your mark found only water. Press any key to jump to the next player.");
                 Console.ReadKey();
             }
             iface.DrawMessage(activePlayer.name + " won the battle. Congratulations.\nThis simulation is now over. Do you want to try again? Press Space to run the simulation one more time.");
@@ -116,29 +129,28 @@ namespace BigBattleships
         {
             if (!player.isAI)
             {
-
                 for (int i = 0; i < player.fleet.Length; i++)
                 {
                     do
                     {
                         iface.updateMaps(player.FleetMap, player.EnemyMap);
-                        iface.DrawMessage(player.name +". Use arrows to select coordinate for your " + player.fleet[i].Length + " units long boat");
+                        iface.DrawMessage(player.name + ". Use arrows to select coordinate for your " + player.fleet[i].Length + " units long boat");
 
                         int[] boatCoor = iface.GetCoordinate(player.FleetMap, 0);
                         iface.UpdateQuestion("Player. Time to deploy your fleet. How will you deploy your " + player.fleet[i].Length + " long boat?", ["Horizontally", "Vertically"]);
                         int newOrientation = iface.OptionMenu();
                         player.fleet[i].Redeploy(boatCoor[0], boatCoor[1], newOrientation);
                     }
-                    while (!player.IsPlaceBoat(Fleet1[i]));
+                    while (!player.IsPlaceBoat(player.fleet[i]));
                     player.deployBoat(player.fleet[i]);
                 }
+                iface.updateMaps(player.FleetMap, player.EnemyMap);
+                iface.DrawMaps();
             }
             else
             {
                 player.DeployRandomFleet();
             }
-            iface.updateMaps(player.FleetMap, player.EnemyMap);
-            iface.DrawMaps();
             iface.DrawMessage("Your fleet has been deployed. Press any key to continue.");
             Console.ReadKey();
         }
